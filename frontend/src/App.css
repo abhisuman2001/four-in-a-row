@@ -9,66 +9,76 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  background: #1e1e2f; /* Dark background for whole page */
+  
+  /* Restoring the Blue Gradient Background */
+  background: radial-gradient(circle at center, #1e3a8a 0%, #0f172a 100%);
   color: white;
 }
 
 h1 {
-  font-size: 2.5rem;
+  font-size: 3rem;
   margin-bottom: 10px;
+  text-shadow: 0 4px 6px rgba(0,0,0,0.3);
 }
 
 .status {
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   font-weight: bold;
-  margin-bottom: 20px;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 10px 20px;
-  border-radius: 20px;
+  margin-bottom: 25px;
+  background: rgba(255, 255, 255, 0.15); /* Glass effect */
+  padding: 10px 25px;
+  border-radius: 50px;
   display: inline-block;
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255,255,255,0.2);
 }
 
-/* --- THE BOARD --- */
+/* --- THE BOARD (With Fix) --- */
 .board {
   display: grid;
-  /* Force exactly 7 columns, each 50px wide (adjustable) */
-  grid-template-columns: repeat(7, 50px);
-  /* Force exactly 6 rows */
-  grid-template-rows: repeat(6, 50px); 
-  gap: 8px;
+  /* Force exactly 7 columns, fixed size */
+  grid-template-columns: repeat(7, 55px);
+  /* Force exactly 6 rows, fixed size */
+  grid-template-rows: repeat(6, 55px); 
+  gap: 10px;
   
-  background-color: #2563eb; /* Classic Connect 4 Blue */
+  background-color: #3b82f6; /* Lighter Blue Board */
   padding: 15px;
-  border-radius: 15px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  border-radius: 20px;
+  box-shadow: 
+    0 20px 25px -5px rgba(0, 0, 0, 0.5), 
+    0 10px 10px -5px rgba(0, 0, 0, 0.3);
   
-  /* Prevent it from being too wide or narrow */
-  width: fit-content;
+  /* Center it perfectly */
   margin: 0 auto;
 }
 
 .cell {
-  width: 50px;
-  height: 50px;
-  background-color: #f8fafc; /* Empty white slot */
+  width: 55px;
+  height: 55px;
+  background-color: #f1f5f9; /* White-ish slots */
   border-radius: 50%;
   cursor: pointer;
-  box-shadow: inset 0 4px 6px rgba(0,0,0,0.2);
-  transition: transform 0.1s;
+  box-shadow: inset 0 6px 6px rgba(0,0,0,0.2); /* Depth effect */
+  border: 2px solid #2563eb;
+  transition: all 0.2s ease;
 }
 
 .cell:hover {
   transform: scale(0.95);
+  background-color: #e2e8f0;
 }
 
 .cell.red {
   background-color: #ef4444;
-  box-shadow: inset 0 -4px 4px rgba(0,0,0,0.2);
+  box-shadow: inset 0 -6px 4px rgba(0,0,0,0.3), 0 4px 6px rgba(0,0,0,0.2);
+  border-color: #b91c1c;
 }
 
 .cell.yellow {
   background-color: #eab308;
-  box-shadow: inset 0 -4px 4px rgba(0,0,0,0.2);
+  box-shadow: inset 0 -6px 4px rgba(0,0,0,0.3), 0 4px 6px rgba(0,0,0,0.2);
+  border-color: #a16207;
 }
 
 /* Login Screen Styles */
@@ -77,32 +87,45 @@ h1 {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 80vh;
+  height: 60vh;
+}
+
+.login-screen h1 {
+    margin-bottom: 2rem;
 }
 
 input {
-  padding: 12px;
-  font-size: 1.1rem;
-  border-radius: 8px;
-  border: none;
+  padding: 15px;
+  font-size: 1.2rem;
+  border-radius: 12px;
+  border: 2px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.1);
+  color: white;
   margin-top: 15px;
-  width: 250px;
+  width: 300px;
   text-align: center;
+  outline: none;
+}
+
+input::placeholder {
+    color: rgba(255,255,255,0.6);
 }
 
 button {
-  margin-top: 20px;
-  padding: 12px 30px;
-  font-size: 1.1rem;
+  margin-top: 25px;
+  padding: 15px 40px;
+  font-size: 1.2rem;
   font-weight: bold;
   background: #3b82f6;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: transform 0.1s, background 0.2s;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
 }
 
 button:hover {
   background: #2563eb;
+  transform: translateY(-2px);
 }
