@@ -12,7 +12,7 @@ function App() {
 
 ws.current = new WebSocket(WS_URL);
 
-    ws.current = new WebSocket("ws://localhost:8080/ws")
+    // ws.current = new WebSocket("ws://localhost:8080/ws")
 
     ws.current.onopen = () => {
       setStatus("Searching for opponent... (Wait 10s for Bot)")
