@@ -3,16 +3,18 @@ import './App.css'
 
 function App() {
   const [gameState, setGameState] = useState(null)
-  const [status, setStatus] = useState("Connecting to server...")
+  const [status, setStatus] = useState("Connecting...")
+  const [username, setUsername] = useState("")
+  const [isLoggedIn, setIsLoggedIn] = useState(false) // <--- NEW STATE
   const ws = useRef(null)
 
   useEffect(() => {
-    // Connect to your Go Backend
-    const WS_URL = "wss://four-in-a-row-ilyp.onrender.com/ws"; 
+    // Only connect IF user has logged in
+    if (!isLoggedIn) return;
 
-ws.current = new WebSocket(WS_URL);
-
-    // ws.current = new WebSocket("ws://localhost:8080/ws")
+    // Connect to Backend
+    const WS_URL = "wss://four-in-a-row-ilyp.onrender.com/ws";
+    ws.current = new WebSocket(WS_URL);
 
     ws.current.onopen = () => {
       setStatus("Searching for opponent... (Wait 10s for Bot)")
@@ -24,68 +26,84 @@ ws.current = new WebSocket(WS_URL);
       
       if (data.winner > 0) {
         if (data.winner === 3) setStatus("It's a Draw!")
-        else setStatus(data.winner === data.youAre ? "🎉 You Won!" : "💀 You Lost!")
+        else setStatus(data.winner === data.youAre ? `🎉 ${username}, You Won!` : "💀 You Lost!")
       } else {
-        setStatus(data.turn === data.youAre ? "🟢 Your Turn" : "🔴 Opponent's Turn")
+        setStatus(data.turn === data.youAre ? `🟢 Your Turn, ${username}` : "🔴 Opponent's Turn")
       }
     }
 
-    return () => ws.current.close()
-  }, [])
+    return () => {
+      if (ws.current) ws.current.close()
+    }
+  }, [isLoggedIn]) // <--- Depends on isLoggedIn
 
   const handleDrop = (colIndex) => {
     if (!gameState || gameState.winner > 0) return
-    if (gameState.turn !== gameState.youAre) return // Not your turn
+    if (gameState.turn !== gameState.youAre) return
 
     ws.current.send(JSON.stringify({ col: colIndex }))
   }
 
-  // Render Board with drop indicator
+  const handleLogin = () => {
+    if (username.trim() !== "") {
+      setIsLoggedIn(true);
+    }
+  }
+
   const renderBoard = () => {
     if (!gameState) return null
-    return (
-      <>
-        {/* Drop indicator row */}
-        <div className="drop-row">
-          {Array(7).fill(0).map((_, cIndex) => (
-            <div
-              key={`drop-${cIndex}`}
-              className="drop-indicator"
-              onClick={() => handleDrop(cIndex)}
-            >
-              <span role="img" aria-label="drop">⬇️</span>
-            </div>
-          ))}
-        </div>
-        {/* Game board grid */}
-        <div className="grid">
-          {gameState.board.map((row, rIndex) =>
-            row.map((cell, cIndex) => {
-              let classColor = ""
-              if (cell === 1) classColor = "red"
-              if (cell === 2) classColor = "yellow"
-              return (
-                <div
-                  key={`${rIndex}-${cIndex}`}
-                  className={`cell ${classColor}`}
-                  style={{ animationDelay: `${rIndex * 0.05 + cIndex * 0.02}s` }}
-                  onClick={() => handleDrop(cIndex)}
-                />
-              )
-            })
-          )}
-        </div>
-      </>
+    return gameState.board.map((row, rIndex) => 
+      row.map((cell, cIndex) => {
+        let classColor = ""
+        if (cell === 1) classColor = "red"
+        if (cell === 2) classColor = "yellow"
+        
+        return (
+          <div 
+            key={`${rIndex}-${cIndex}`} 
+            className={`cell ${classColor}`}
+            onClick={() => handleDrop(cIndex)}
+          />
+        )
+      })
     )
   }
 
-  return (
-    <div className="game-container">
-      <h1 className="game-title">Connect 4 <span className="realtime-badge">Real Time</span></h1>
-      <div className="status">{status}</div>
-      <div className="board">
-        {gameState ? renderBoard() : <p>Loading Game...</p>}
+  // --- 1. RENDER LOGIN SCREEN IF NOT LOGGED IN ---
+  if (!isLoggedIn) {
+    return (
+      <div className="login-screen">
+        <h1>4 in a Row</h1>
+        <p>Enter your username to join the battle!</p>
+        <input 
+          type="text" 
+          placeholder="Username..." 
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          style={{ padding: '10px', fontSize: '16px', borderRadius: '5px', border: '1px solid #ccc' }}
+        />
+        <br />
+        <button 
+          onClick={handleLogin}
+          style={{ marginTop: '20px', padding: '10px 20px', fontSize: '16px', background: '#3b82f6', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}
+        >
+          Join Game
+        </button>
       </div>
+    )
+  }
+
+  // --- 2. RENDER GAME BOARD ---
+  return (
+    <div>
+      <h1>Connect 4 - Real Time</h1>
+      <div className="status">{status}</div>
+      {gameState && (
+        <div className="board">
+          {renderBoard()}
+        </div>
+      )}
+      {!gameState && <p>Loading Game Board...</p>}
     </div>
   )
 }
