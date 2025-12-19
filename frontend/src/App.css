@@ -1,0 +1,148 @@
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  justify-content: center;
+}
+
+.game-title {
+  font-size: 2.8rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #2563eb;
+  margin-bottom: 0.2em;
+  text-shadow: 0 2px 8px #0002;
+}
+
+.realtime-badge {
+  background: linear-gradient(90deg, #facc15 40%, #ef4444 100%);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 1em;
+  padding: 0.2em 0.8em;
+  margin-left: 0.5em;
+  box-shadow: 0 2px 8px #0002;
+}
+
+.status {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 1.2rem;
+  color: #fff;
+  background: linear-gradient(90deg, #2563eb 60%, #3b82f6 100%);
+  border-radius: 0.7em;
+  padding: 0.4em 1.2em;
+  box-shadow: 0 2px 8px #0002;
+  display: inline-block;
+}
+
+.board {
+  background: linear-gradient(180deg, #2563eb 80%, #1e293b 100%);
+  border-radius: 18px;
+  padding: 18px 18px 10px 18px;
+  box-shadow: 0 8px 32px #0004, 0 1.5px 0 #fff3 inset;
+  margin-top: 18px;
+  min-width: 520px;
+}
+
+.drop-row {
+  display: grid;
+  grid-template-columns: repeat(7, 60px);
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.drop-indicator {
+  width: 60px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.5rem;
+  opacity: 0.85;
+  transition: transform 0.15s, opacity 0.2s;
+}
+.drop-indicator:hover {
+  transform: translateY(2px) scale(1.15);
+  opacity: 1;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 60px);
+  grid-template-rows: repeat(6, 60px);
+  gap: 8px;
+}
+
+.cell {
+  width: 60px;
+  height: 60px;
+  background: radial-gradient(circle at 60% 40%, #fff 60%, #e0e7ef 100%);
+  border-radius: 50%;
+  box-shadow: 0 2px 8px #0002, 0 1.5px 0 #fff3 inset;
+  cursor: pointer;
+  transition: box-shadow 0.2s, transform 0.15s, background 0.2s;
+  animation: dropIn 0.4s cubic-bezier(.4,1.6,.6,1) both;
+}
+.cell.red {
+  background: radial-gradient(circle at 60% 40%, #f87171 60%, #ef4444 100%);
+  box-shadow: 0 2px 12px #ef444488, 0 1.5px 0 #fff3 inset;
+}
+.cell.yellow {
+  background: radial-gradient(circle at 60% 40%, #fde047 60%, #eab308 100%);
+  box-shadow: 0 2px 12px #eab30888, 0 1.5px 0 #fff3 inset;
+}
+.cell:hover {
+  box-shadow: 0 4px 16px #0004, 0 1.5px 0 #fff3 inset;
+  transform: scale(1.08);
+  opacity: 0.92;
+}
+
+@keyframes dropIn {
+  0% {
+    transform: translateY(-40px) scale(0.7);
+    opacity: 0.2;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 700px) {
+  .game-container {
+    padding: 0.5em;
+  }
+  .board {
+    min-width: unset;
+    padding: 6px 2px 2px 2px;
+    border-radius: 10px;
+  }
+  .grid, .drop-row {
+    grid-template-columns: repeat(7, 32px) !important;
+    gap: 4px;
+  }
+  .cell, .drop-indicator {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+  }
+  .game-title {
+    font-size: 1.5rem;
+  }
+  .status {
+    font-size: 1rem;
+    padding: 0.3em 0.7em;
+  }
+}
