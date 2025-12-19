@@ -10,7 +10,7 @@
   align-items: center;
   justify-content: flex-start;
   
-  /* Restoring the Blue Gradient Background */
+  /* Blue Gradient Background */
   background: radial-gradient(circle at center, #1e3a8a 0%, #0f172a 100%);
   color: white;
 }
@@ -25,7 +25,7 @@ h1 {
   font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 25px;
-  background: rgba(255, 255, 255, 0.15); /* Glass effect */
+  background: rgba(255, 255, 255, 0.15);
   padding: 10px 25px;
   border-radius: 50px;
   display: inline-block;
@@ -33,33 +33,33 @@ h1 {
   border: 1px solid rgba(255,255,255,0.2);
 }
 
-/* --- THE BOARD (With Fix) --- */
+/* --- THE BOARD FIX --- */
 .board {
   display: grid;
-  /* Force exactly 7 columns, fixed size */
+  /* strictly 7 cols x 6 rows */
   grid-template-columns: repeat(7, 55px);
-  /* Force exactly 6 rows, fixed size */
-  grid-template-rows: repeat(6, 55px); 
+  grid-template-rows: repeat(6, 55px);
   gap: 10px;
   
-  background-color: #3b82f6; /* Lighter Blue Board */
+  /* CRITICAL FIX: Shrink width to fit content exactly */
+  width: max-content; 
+  margin: 0 auto; /* Center horizontally */
+  
+  background-color: #3b82f6;
   padding: 15px;
   border-radius: 20px;
   box-shadow: 
     0 20px 25px -5px rgba(0, 0, 0, 0.5), 
     0 10px 10px -5px rgba(0, 0, 0, 0.3);
-  
-  /* Center it perfectly */
-  margin: 0 auto;
 }
 
 .cell {
   width: 55px;
   height: 55px;
-  background-color: #f1f5f9; /* White-ish slots */
+  background-color: #f1f5f9;
   border-radius: 50%;
   cursor: pointer;
-  box-shadow: inset 0 6px 6px rgba(0,0,0,0.2); /* Depth effect */
+  box-shadow: inset 0 6px 6px rgba(0,0,0,0.2);
   border: 2px solid #2563eb;
   transition: all 0.2s ease;
 }
