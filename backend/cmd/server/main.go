@@ -46,7 +46,12 @@ func handleWS(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func handleHome(w http.ResponseWriter, r *http.Request) {
+    w.Write([]byte("✅ 4-in-a-Row Game Server is Running!"))
+}
+
 func main() {
+	http.HandleFunc("/", handleHome)
 	http.HandleFunc("/ws", handleWS)
 	port := os.Getenv("PORT")
     if port == "" {
