@@ -8,7 +8,8 @@ function App() {
 
   useEffect(() => {
     // Connect to your Go Backend
-    const WS_URL = import.meta.env.VITE_WS_URL || "ws://localhost:8080/ws";
+    const WS_URL = "wss://four-in-a-row-ilyp.onrender.com/ws"; 
+
 ws.current = new WebSocket(WS_URL);
 
     ws.current = new WebSocket("ws://localhost:8080/ws")
